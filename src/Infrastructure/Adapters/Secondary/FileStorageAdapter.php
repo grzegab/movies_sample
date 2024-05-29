@@ -10,4 +10,6 @@ interface FileStorageAdapter
      * @return array<int, string>
      */
     public function getMovieFileData(): array;
+
+    public function getMovieFileDataIterator(): \Iterator;
 }

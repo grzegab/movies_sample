@@ -7,29 +7,33 @@ namespace App\Infrastructure\FileStorage;
 use App\Domain\Collection\Movies;
 use App\Domain\Factory\MoviesFactory;
 use App\Domain\Repository\FileStorageRepository;
+use App\Infrastructure\Adapters\Secondary\FileStorageAdapter;
 
 readonly class Service implements FileStorageRepository
 {
     public function __construct(
-        private Client $fileStorageClient,
+        private FileStorageAdapter $fileStorageClient,
         private MoviesFactory $moviesFactory
     ) {
     }
 
     public function getFilterByWordCount(int $count): Movies
     {
-        $moveTitles = $this->getTitles();
+        $moveTitles = $this->fileStorageClient->getMovieFileDataIterator();
 
-        $filteredTitles = array_filter($moveTitles, function ($title) use ($count) {
-            return substr_count($title, ' ') + 1 === $count;
-        });
+        $acceptedTitles = [];
+        foreach ($moveTitles as $title) {
+            if (is_string($title) && substr_count($title, ' ') + 1 === $count) {
+                $acceptedTitles[] = $title;
+            }
+        }
 
-        return $this->moviesFactory->createFrom($filteredTitles);
+        return $this->moviesFactory->createFrom($acceptedTitles);
     }
 
     public function getRandomMovies(int $count): Movies
     {
-        $moveTitles = $this->getTitles();
+        $moveTitles = $this->fileStorageClient->getMovieFileData();
 
         /** @var array<int,string> $randomKeys */
         $randomKeys = array_rand($moveTitles, $count);
@@ -41,25 +45,17 @@ readonly class Service implements FileStorageRepository
         return $this->moviesFactory->createFrom($randomTitles);
     }
 
-    public function getMoviesStartingWithAndEven(string $letter, bool $even): Movies
+    public function getMoviesStartingWithAndEven(string $letter): Movies
     {
-        $moveTitles = $this->getTitles();
+        $moveTitles = $this->fileStorageClient->getMovieFileDataIterator();
 
-        $filteredTitles = array_filter($moveTitles, function ($title) use ($letter, $even) {
-            $startsWithLetter = str_starts_with($title, $letter);
-            $isEven = 0 === strlen($title) % 2;
+        $acceptedTitles = [];
+        foreach ($moveTitles as $title) {
+            if (is_string($title) && str_starts_with($title, $letter)) {
+                $acceptedTitles[] = $title;
+            }
+        }
 
-            return $startsWithLetter && ($isEven === $even);
-        });
-
-        return $this->moviesFactory->createFrom($filteredTitles);
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    private function getTitles(): array
-    {
-        return $this->fileStorageClient->getMovieFileData();
+        return $this->moviesFactory->createFrom($acceptedTitles);
     }
 }

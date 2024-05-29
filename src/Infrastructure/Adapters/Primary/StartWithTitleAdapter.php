@@ -8,5 +8,5 @@ use Symfony\Component\HttpFoundation\Response;
 
 interface StartWithTitleAdapter
 {
-    public function startingWith(string $startingLetter = 'W', bool $even = true): Response;
+    public function startingWith(string $startingLetter = 'W'): Response;
 }

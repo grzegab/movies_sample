@@ -23,8 +23,8 @@ final readonly class TitleHandler
         return $this->fileStorage->getFilterByWordCount($count);
     }
 
-    public function filterMoviesByStartingLetterAndEven(string $letter, bool $even): Movies
+    public function filterMoviesByStartingLetterAndEven(string $letter): Movies
     {
-        return $this->fileStorage->getMoviesStartingWithAndEven($letter, $even);
+        return $this->fileStorage->getMoviesStartingWithAndEven($letter);
     }
 }

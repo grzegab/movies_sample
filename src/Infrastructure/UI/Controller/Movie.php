@@ -51,10 +51,10 @@ final readonly class Movie implements RandomTitleAdapter, WordCountTitleAdapter,
 
     #[Route(path: '/starting-with-letter', name: 'starting_with', methods: ['GET'])]
     #[OA\Response(response: Response::HTTP_OK, description: 'OK')]
-    #[OA\Get(description: 'Movies starting on specific letter (with even count check)', summary: 'Get titles starting on specific letter (by default "W") and with even string count (could be set to odd)')]
-    public function startingWith(#[MapQueryParameter] string $startingLetter = 'W', #[MapQueryParameter] bool $even = true): Response
+    #[OA\Get(description: 'Movies starting on specific letter (which count are even)', summary: 'Get titles starting on specific letter (by default "W") and with even string count')]
+    public function startingWith(#[MapQueryParameter] string $startingLetter = 'W'): Response
     {
-        $movies = $this->titleHandler->filterMoviesByStartingLetterAndEven($startingLetter, $even);
+        $movies = $this->titleHandler->filterMoviesByStartingLetterAndEven($startingLetter);
         $moviesJson = $this->serializer->serialize($movies, JsonEncoder::FORMAT);
 
         return new Response($moviesJson);

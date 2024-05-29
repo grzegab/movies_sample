@@ -12,5 +12,5 @@ interface FileStorageRepository
 
     public function getFilterByWordCount(int $count): Movies;
 
-    public function getMoviesStartingWithAndEven(string $letter, bool $even): Movies;
+    public function getMoviesStartingWithAndEven(string $letter): Movies;
 }
