@@ -19,4 +19,4 @@ services:
     ports:
       - '8082:8080'
     environment:
-      SWAGGER_JSON_URL: http://nginx/api/doc.json
+      SWAGGER_JSON_URL: http://localhost/endpoints.json
