@@ -28,8 +28,10 @@
     }
     ,
     "require-dev": {
+        "dg/bypass-finals": "^1.7",
         "friendsofphp/php-cs-fixer": "^3.58",
         "phpstan/phpstan": "^1.11",
+        "phpunit/phpunit": "^11.1",
         "roave/security-advisories": "dev-latest",
         "symfony/stopwatch": "7.0.*",
         "symfony/web-profiler-bundle": "7.0.*"
