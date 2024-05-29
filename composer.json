@@ -28,6 +28,8 @@
     }
     ,
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.58",
+        "phpstan/phpstan": "^1.11",
         "roave/security-advisories": "dev-latest",
         "symfony/stopwatch": "7.0.*",
         "symfony/web-profiler-bundle": "7.0.*"
