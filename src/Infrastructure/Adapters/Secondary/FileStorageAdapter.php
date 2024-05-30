@@ -11,7 +11,13 @@ interface FileStorageAdapter
      */
     public function getRandomTitles(int $count): array;
 
+    /**
+     * @return array<int, string>
+     */
     public function startingWithTitles(string $letter): array;
 
+    /**
+     * @return array<int, string>
+     */
     public function getTitlesWithWordCount(int $count): array;
 }
