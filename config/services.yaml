@@ -18,6 +18,7 @@ services:
         exclude:
             - '../src/Domain/VO'
             - '../src/Domain/Collection'
+            - '../src/Infrastructure/FileStorage/Storage'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
