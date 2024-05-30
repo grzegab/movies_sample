@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\FileStorage;
 
-use App\Infrastructure\Adapters\Secondary\FileStorageAdapter;
 use App\Infrastructure\Exceptions\MissingDataException;
 
-class Client implements FileStorageAdapter
+class Client
 {
     private const string FILE_PATH = __DIR__.'/Storage/movies.php';
 
@@ -33,8 +32,6 @@ class Client implements FileStorageAdapter
             throw new MissingDataException();
         }
 
-        foreach ($movies as $movie) {
-            yield $movie;
-        }
+        yield from $movies;
     }
 }

@@ -12,50 +12,29 @@ use App\Infrastructure\Adapters\Secondary\FileStorageAdapter;
 readonly class Service implements FileStorageRepository
 {
     public function __construct(
-        private FileStorageAdapter $fileStorageClient,
+        private FileStorageAdapter $fileRepository,
         private MoviesFactory $moviesFactory
     ) {
     }
 
     public function getFilterByWordCount(int $count): Movies
     {
-        $moveTitles = $this->fileStorageClient->getMovieFileDataIterator();
+        $titlesWithWordCount = $this->fileRepository->getTitlesWithWordCount($count);
 
-        $acceptedTitles = [];
-        foreach ($moveTitles as $title) {
-            if (is_string($title) && substr_count($title, ' ') + 1 === $count) {
-                $acceptedTitles[] = $title;
-            }
-        }
-
-        return $this->moviesFactory->createFrom($acceptedTitles);
+        return $this->moviesFactory->createFrom($titlesWithWordCount);
     }
 
     public function getRandomMovies(int $count): Movies
     {
-        $moveTitles = $this->fileStorageClient->getMovieFileData();
-
-        /** @var array<int,string> $randomKeys */
-        $randomKeys = array_rand($moveTitles, $count);
-
-        $randomTitles = array_map(function ($key) use ($moveTitles) {
-            return $moveTitles[$key];
-        }, $randomKeys);
+        $randomTitles = $this->fileRepository->getRandomTitles($count);
 
         return $this->moviesFactory->createFrom($randomTitles);
     }
 
     public function getMoviesStartingWithAndEven(string $letter): Movies
     {
-        $moveTitles = $this->fileStorageClient->getMovieFileDataIterator();
+        $startingWithTitles = $this->fileRepository->startingWithTitles($letter);
 
-        $acceptedTitles = [];
-        foreach ($moveTitles as $title) {
-            if (is_string($title) && str_starts_with($title, $letter)) {
-                $acceptedTitles[] = $title;
-            }
-        }
-
-        return $this->moviesFactory->createFrom($acceptedTitles);
+        return $this->moviesFactory->createFrom($startingWithTitles);
     }
 }

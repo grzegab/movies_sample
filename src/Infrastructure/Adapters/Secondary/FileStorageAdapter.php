@@ -9,7 +9,9 @@ interface FileStorageAdapter
     /**
      * @return array<int, string>
      */
-    public function getMovieFileData(): array;
+    public function getRandomTitles(int $count): array;
 
-    public function getMovieFileDataIterator(): \Iterator;
+    public function startingWithTitles(string $letter): array;
+
+    public function getTitlesWithWordCount(int $count): array;
 }
